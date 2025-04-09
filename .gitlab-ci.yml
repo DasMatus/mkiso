@@ -3,7 +3,7 @@ stages:
   - release
 before_script:
   - apt update
-  - apt install -yqq vagrant git libvirt qemu
+  - apt install -yqq vagrant git libvirt qemu ld.lld
   - systemctl enable --now libvirtd
 Install PM:
   image: rust:latest
@@ -24,4 +24,4 @@ Publish the ISO:
   - when: always
   release:
     tag_name: "mtos/release"
-    description: "Release of MatuushOS, version $(date '+%d.%m.%y-T-%H:%M')"
+    description: "Release of MatuushOS, version $(date '+%d.%m.%y | %H:%M')"

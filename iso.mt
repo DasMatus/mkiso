@@ -8,6 +8,12 @@ for dep in ["vagrant", "git"] { // this can be subject to change,
 }
 // rootfs je v `output/images`
 // len aby si nezabudol
+for mtools in ["pm", "mtinit-v2"] {
+    build.download_extract(mtools, mtools, "git", "https://gitlab.com/MatuushOS/" + mtools, "");
+    build.step("Build " + mtools, "cargo build --release");
+    build.copy_local("target/x86_64-unknown-linux-musl/release/" + mtools, "/tmp");
+    build.set_dir("/tmp");
+}
 build.step("Install vagrant-scp plugin", "vagrant", "plugin install vagrant-scp");
 build.download_extract("buildroot", "buildroot", "git", "https://gitlab.com/buildroot.org/buildroot.git", "");
 build.copy_local("/tmp/cfg-mtos", "./.config");
@@ -20,7 +26,6 @@ build.step(...);
  vagrant ssh -c "...";
 */
 build.step("Run the build", "vagrant", "ssh -c make");
-building.set_dir("output/images");
 
 build.unset_env("VAGRANT_VAGRANTFILE");
 // yolo ig
