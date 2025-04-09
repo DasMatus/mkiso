@@ -1,0 +1,27 @@
+stages:
+  - build
+  - release
+before_script:
+  - apt update
+  - apt install -yqq vagrant git libvirt qemu
+  - systemctl enable --now libvirtd
+Install PM:
+  image: rust:latest
+  stage: build
+  rules:
+  - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+  - when: always
+  script:
+  - cargo install --git https://gitlab.com/MatuushOS/pm
+  - mkdir -p ~/.mtos
+  - cp repos.mt ~/.mtos/config.mt
+  - pm run iso
+Publish the ISO:
+  stage: release  
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules: 
+  - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+  - when: always
+  release:
+    tag_name: "mtos/release"
+    description: "Release of MatuushOS, version $(date '+%d.%m.%y-T-%H:%M')"

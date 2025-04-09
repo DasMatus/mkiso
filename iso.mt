@@ -19,6 +19,8 @@ build.step(...);
 \
  vagrant ssh -c "...";
 */
-build.step("Run the build", "vagrant", "ssh -c 'make'");
+build.step("Run the build", "vagrant", "ssh -c make");
+building.set_dir("output/images");
+
 build.unset_env("VAGRANT_VAGRANTFILE");
 // yolo ig
