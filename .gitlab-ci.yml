@@ -3,7 +3,7 @@ stages:
   - release
 before_script:
   - apt update
-  - apt install -yqq vagrant git libvirt qemu ld.lld
+  - apt install -yqq vagrant git libvirt qemu-system-x86 lld
   - systemctl enable --now libvirtd
 Install PM:
   image: rust:latest
