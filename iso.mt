@@ -14,17 +14,10 @@ for mtools in ["pm", "mtinit-v2"] {
     build.copy_local("target/x86_64-unknown-linux-musl/release/" + mtools, "/tmp");
     build.set_dir("/tmp");
 }
-build.step("Install vagrant-scp plugin", "vagrant", "plugin install vagrant-scp");
 build.download_extract("buildroot", "buildroot", "git", "https://gitlab.com/buildroot.org/buildroot.git", "");
 build.copy_local("/tmp/cfg-mtos", "./.config");
 building.set_var("VAGRANT_VAGRANTFILE", "support/misc/Vagrantfile");
 build.step("Bring Vagrant up", "vagrant", "up");
-/*
-toto bude vyzerat hrozne:
-build.step(...);
-\
- vagrant ssh -c "...";
-*/
 build.step("Run the build", "vagrant", "ssh -c make");
 
 build.unset_env("VAGRANT_VAGRANTFILE");
