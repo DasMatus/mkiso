@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2034
+name=mtos
+workdir=$(mktemp --directory)
+base_dir=mtos
+mtos_dirs=("$base_dir/pkgs/user" "$base_dir/pkgs/system" "$base_dir/cfg" "$base_dir/libs" "$base_dir/libs/64" "$base_dir/procedural" "$base_dir/system" "$base_dir/devices" "$base_dir/running")
+dirs=(      bin 				  sbin 					  etc 			  lib 			   lib64 			   proc 				  sys 				 dev 				 run)
+proj_dir=$(pwd)
+out_dir=$(mktemp --directory)
+target=$(arch)-unknown-linux-musl
+kernel=$(uname -r)
+apk=/sbin/apk
+alpine_cmds=("$apk update" "$apk add busybox-static")
+cargo=$HOME/.cargo/bin/cargo
+rustup=$HOME/.cargo/bin/rustup
+musl_bdir=musl_bd
+wget=$(command -v wget || command -v wget2)
+llvm_build_dir=llvm_bd
+TARGET=$(arch)-mtos-linux-musl
+CFLAGS="-static"
