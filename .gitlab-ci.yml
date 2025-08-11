@@ -2,3 +2,8 @@ image: archlinux:latest
 before_script: 
   - pacman -Syyu --noconfirm
   - pacman -S base-devel musl-gcc
+Build it:
+  script: bash mtos-builder.sh
+  artifacts:
+    paths:
+      - target/system.img

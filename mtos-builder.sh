@@ -43,7 +43,7 @@ musl_stage1() {
     bsdtar -xvf /tmp/musl.tar.gz -C /tmp/$musl_bdir
     cd /tmp/$musl_bdir
     CC="clang -static" $(find . -name configure) --prefix=$1
-    make TARGET=$(arch)-mtos-linux-musl-llvm install
+    make TARGET=$(arch)-mtos-linux-musl install
 }
 main() {
     git submodule init recenv
@@ -55,7 +55,11 @@ main() {
 		mkdir -p "$out_dir/$dir"
 	done
 	for dir in $(seq 0 "${#dirs[@]}"); do
-		ln -sf $out_dir/${mtos_dirs[dir]} $out_dir/${dirs[dir]} || break
+		if [[ $dir == "${#dirs[@]}" ]]; then
+            break
+        else
+            ln -sf $out_dir/${mtos_dirs[dir]} $out_dir/${dirs[dir]} || break
+        fi
 	done
 	musl_stage1 $out_dir
 	llvm_stage1 $out_dir
