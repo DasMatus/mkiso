@@ -4,6 +4,7 @@ set -eux -o pipefail
 # shellcheck source=settings
 source settings
 pre_setup() {
+    mkdir -p $proj_dir/cfg
     echo -n "
         set(CMAKE_SYSTEM_NAME Linux)
         set(CMAKE_SYSROOT \"$1\")
