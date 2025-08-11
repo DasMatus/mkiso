@@ -1,6 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2086,SC2046
-set -eux -o pipefail
+ set -eux -o pipefail
 # shellcheck source=settings
 source settings
 pre_setup() {
@@ -54,11 +54,11 @@ main() {
 	for dir in "${mtos_dirs[@]}"; do
 		mkdir -p "$out_dir/$dir"
 	done
-	# for dir in $(seq 0 "${#dirs[@]}"); do
-	# 	ln -sf $out_dir/${mtos_dirs[dir]} $out_dir/${dirs[dir]} || break
-	# done
-	musl_stage1 $workdir
-	llvm_stage1 $workdir
+	for dir in $(seq 0 "${#dirs[@]}"); do
+		ln -sf $out_dir/${mtos_dirs[dir]} $out_dir/${dirs[dir]} || break
+	done
+	musl_stage1 $out_dir
+	llvm_stage1 $out_dir
 	$wget https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/x86_64/alpine-minirootfs-3.22.0_rc1-x86_64.tar.gz -O alpine-rootfs.tar.gz
 	tar -xvf alpine-rootfs.tar.gz -C $workdir
 	cp --dereference /etc/resolv.conf $workdir/etc
