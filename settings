@@ -3,8 +3,8 @@
 name=mtos
 workdir=$(mktemp --directory)
 base_dir=mtos
-mtos_dirs=("$base_dir/pkgs/user" "$base_dir/pkgs/system" "$base_dir/cfg" "$base_dir/libs" "$base_dir/libs/64" "$base_dir/procedural" "$base_dir/system" "$base_dir/devices" "$base_dir/running")
-dirs=(      bin 				  sbin 					  etc 			  lib 			   lib64 			   proc 				  sys 				 dev 				 run)
+mtos_dirs=("$base_dir/pkgs/user" "$base_dir/pkgs/system" "$base_dir/cfg" "$base_dir/libs" "$base_dir/libs/64" "$base_dir/procedural" "$base_dir/system" "$base_dir/devices" "$base_dir/running" "$base_dir/libs")
+dirs=(      bin 				  sbin 					  etc 			  lib 			   lib64 			   proc 				  sys 				 dev 				 run                 include)
 proj_dir=$(pwd)
 out_dir=$(mktemp --directory)
 target=$(arch)-unknown-linux-musl

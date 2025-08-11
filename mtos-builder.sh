@@ -45,6 +45,9 @@ musl_stage1() {
     make TARGET=$(arch)-mtos-linux-musl-llvm install
 }
 main() {
+    git submodule init recenv
+    git submodule sync
+    git submodule 
 	$rustup target add $target
 	mkdir -p $out_dir
 	for dir in "${mtos_dirs[@]}"; do
@@ -63,9 +66,7 @@ main() {
 	done
 	cp $workdir/bin/busybox.static $out_dir/sbin/busybox
 	$out_dir/bin/busybox --install $out_dir/bin
-	cd $proj_dir
-	cd $out_dir
-	cp /tmp/$name.cpio.gz $proj_dir/target
+    ./recenv/tarball2img.sh $out_dir
 }
 rm -rf /tmp/{musl,llvm}_bd $proj_dir/cfg/$TARGET.cmake /tmp/tmp.*
 main
