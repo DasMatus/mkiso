@@ -1,7 +1,7 @@
 image: archlinux:latest
 before_script: 
   - pacman -Syyu --noconfirm
-  - pacman -S base-devel musl-gcc
+  - pacman -S base-devel musl-gcc --noconfirm
 Build it:
   script: bash mtos-builder.sh
   artifacts:
