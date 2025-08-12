@@ -5,11 +5,11 @@ set -eux -o pipefail
 source settings
 proj_dir=$(pwd)
 wget=$(command -v wget || command -v wget2)
-USE="-webengine -previewer "
+USE=""
 gentoo_cmds=("emerge-webrsync"
-			 "emerge --oneshot sys-apps/portage"
-			 "emerge -u eselect linux-firmware grub display-manager-init"
-			 )
+	"emerge --oneshot sys-apps/portage"
+	"emerge -u eselect linux-firmware grub display-manager-init"
+)
 main() {
 	rm -rf /tmp/tmp.* /tmp/gentoo-snapshot.tar.xz
 	mkdir -p $bdir
@@ -24,16 +24,12 @@ main() {
 	USE+="$desktop "
 	$wget $mirror/$version -O /tmp/gentoo-snapshot.tar.xz || echo "Snapshot exists, continuing"
 	tar -xpvf /tmp/gentoo-snapshot.tar.xz -C $bdir || true
-	if [[ $forbid_emerge == true ]]; then
-
-		echo -n "#!/usr/bin/env bash\nset -Eeux -o pipefail\nif [[ \$(id -u) != 0 ]]; then\n\texit\nelse\n\techo \"Please run \"" >> $bdir/usr/bin/emerge
-	fi
 	cp /etc/resolv.conf $bdir/etc
 	for cmd in "${gentoo_cmds[@]}"; do
 		USE=$USE arch-chroot $bdir $cmd
 	done
 	install -d $bdir/etc/runlevels/$name
-	# Fix some issues with the desktop dependencies
+	# Fix some issues with the desktop
 	USE="minimal" arch-chroot $bdir emerge --oneshot libsndfile
 	# Merge the desktop
 	case "$desktop" in
@@ -43,9 +39,7 @@ main() {
 			;;
 		kde)
 			echo "DISPLAYMANAGER=sddm" | tee $bdir/etc/conf.d/display-manager
-			USE="$USE -X sddm display-manager " arch-chroot $bdir emerge -v plasma-
-			;;
-		other)
+			USE="$USE -X sddm display-manager " arch-chroot $bdir emerge -v
 			;;
 	esac
 	for overlay in "${overlays[@]}"; do
@@ -56,20 +50,20 @@ main() {
 		USE=$USE arch-chroot $bdir emerge -v $pkg || continue
 	done
 	for svc in "${svcs[@]}"; do
-		arch-chroot $bdir rc-update add $svc	
+		arch-chroot $bdir rc-update add $svc
 	done
-	$proj_dir/recenv/tarball2img.sh $bdir
+	$proj_dir/recenv/tarball2img.sh $bdir $name
 }
 if [[ $(id -u) != 0 ]]; then
-    providers=(sudo doas run0)
-    for escalation in "${providers[@]}"; do
-        if [[ -f $(command -v $escalation) ]]; then
-            $escalation $(command -v bash) $0
-            break;
-        else
-            continue
-        fi
-    done
+	providers=(sudo doas run0)
+	for escalation in "${providers[@]}"; do
+		if [[ -f $(command -v $escalation) ]]; then
+			$escalation $(command -v bash) $0
+			break
+		else
+			continue
+		fi
+	done
 else
 	main
 fi
