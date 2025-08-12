@@ -13,7 +13,7 @@ pre_setup() {
         set(CMAKE_C_FLAGS_INIT \"$CFLAGS\")
         set(CMAKE_CXX_FLAGS_INIT \"$CFLAGS\")
         set(CMAKE_LINKER_TYPE LLD)
-        set(CMAKE_C_COMPILER clang)
+        set(CMAKE_C_COMPILER musl-clang)
         set(CMAKE_CXX_COMPILER clang++)
         set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
         set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
