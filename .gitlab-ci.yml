@@ -1,7 +1,7 @@
 image: archlinux:latest
 before_script: 
   - pacman -Syyu --noconfirm
-  - pacman -S base-devel musl cmake tar --noconfirm
+  - pacman -S base base-devel musl cmake tar util-linux arch-install-scripts --noconfirm
 Build it:
   script: bash mtos-builder.sh
   artifacts:
