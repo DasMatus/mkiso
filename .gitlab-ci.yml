@@ -1,6 +1,7 @@
 image: fedora:rawhide
 before_script: 
   - dnf in -y @development-tools cmake musl-clang util-linux wget rustup
+  - echo 1\n | rustup-init
 Build it:
   script: bash mtos-builder.sh
   artifacts:
