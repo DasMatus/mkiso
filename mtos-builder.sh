@@ -43,7 +43,7 @@ main() {
 			;;
 		kde)
 			echo "DISPLAYMANAGER=sddm" | tee $bdir/etc/conf.d/display-manager
-			USE="$USE -X sddm display-manager " arch-chroot $bdir emerge -v plam
+			USE="$USE -X sddm display-manager " arch-chroot $bdir emerge -v plasma-
 			;;
 		other)
 			;;
