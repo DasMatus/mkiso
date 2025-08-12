@@ -1,6 +1,6 @@
 image: fedora:rawhide
 before_script: 
-  - dnf in -y @development-tools cmake musl-clang util-linux 
+  - dnf in -y @development-tools cmake musl-clang util-linux wget
 Build it:
   script: bash mtos-builder.sh
   artifacts:
