@@ -1,0 +1,22 @@
+diff --git a/tmp/gentoo/etc/os-release b/tmp/gentoo/etc/os-release
+deleted file mode 120000
+index c4c75b4..0000000
+--- a/tmp/gentoo/etc/os-release
++++ /dev/null
+@@ -1 +0,0 @@
+-../usr/lib/os-release
+\ No newline at end of file
+diff --git a/patches/sys-apps/lsb-release/os-release b/patches/sys-apps/lsb-release/os-release
+new file mode 100644
+index 0000000..7c10cee
+--- /dev/null
++++ b/patches/sys-apps/lsb-release/os-release
+@@ -0,0 +1,8 @@
++NAME=MatuushOS
++ID=mtos
++PRETTY_NAME="MatuushOS Linux"
++ANSI_COLOR="1;32"
++HOME_URL="https://matuushos.gitlab.io"
++SUPPORT_URL="https://matuushos.gitlab.io"
++BUG_REPORT_URL="https://gitlab.com/MatuushOS/mkiso/-/issues"
++VERSION_ID="2.17"
