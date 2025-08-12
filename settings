@@ -14,5 +14,7 @@ version=$(curl https://distfiles.gentoo.org/releases/amd64/autobuilds/current-st
 awk '{print $1}' | head -n 6 | tail --lines 1)
 # Build directory
 bdir=$(mktemp --directory)
-# Packages we want to include in our version of MatuushOS (please don't include desktop environments)
-pkgs=()
+# Packages we want to include in our version of MatuushOS (please don't include packges for desktop environments)
+pkgs=(dbus elogind)
+# Whether to forbid the use of emerge.
+forbid_emerge=true
