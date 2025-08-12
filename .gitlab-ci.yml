@@ -1,7 +1,6 @@
-image: archlinux:latest
+image: fedora:rawhide
 before_script: 
-  - pacman -Syyu --noconfirm
-  - pacman -S base base-devel musl cmake tar util-linux arch-install-scripts --noconfirm
+  - dnf in -y @development-tools cmake musl util-linux 
 Build it:
   script: bash mtos-builder.sh
   artifacts:
