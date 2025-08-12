@@ -16,7 +16,7 @@ awk '{print $1}' | head -n 6 | tail --lines 1)
 # Build directory
 bdir=$(mktemp --directory)
 # Packages we want to include in our version of MatuushOS (please don't include packges for desktop environments)
-pkgs=(dbus sys-apps/elogind librewolf papirus-icon-theme flatpak)
+pkgs=(dbus sys-apps/elogind librewolf papirus-icon-theme flatpak podman fwupd)
 # Whether to forbid the use of emerge.
 forbid_emerge=true
 # Additional overlays to enable. Git overlays are not yet supported.
@@ -25,3 +25,5 @@ overlays=(librewolf)
 flags=(dbus elogind wayland pipewire)
 # Additional commands to run inside the chroot
 additional_cmds=("flatpak remote-add flathub https://dl.flathub.org/repo/flathub.flatpakrepo")
+# Which services to enable
+svcs=(dbus elogind display-manager-init)
