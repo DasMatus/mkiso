@@ -9,4 +9,7 @@ And more coming down the road.
 The OS updates itself while you're doing something more interesting. 
 
 # What needs to be implemented:
-- [] Initramfs
+- [] Initramfs generation
+
+# What needs to be done in the future?
+- []

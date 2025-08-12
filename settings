@@ -9,3 +9,10 @@ variant=amd64-musl-llvm
 # - gnome
 # - kde
 desktop=gnome
+# Snapshot of Gentoo we want to use
+version=$(curl https://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-$variant/latest-stage3-$variant.txt | 
+awk '{print $1}' | head -n 6 | tail --lines 1)
+# Build directory
+bdir=$(mktemp --directory)
+# Packages we want to include in our version of MatuushOS (please don't include desktop environments)
+pkgs=()
