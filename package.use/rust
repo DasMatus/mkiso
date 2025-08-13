@@ -1,0 +1,1 @@
+dev-lang/rust mrustc-bootstrap system-llvm clippy llvm-libunwind rust-analyzer lto

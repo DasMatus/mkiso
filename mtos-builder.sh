@@ -27,6 +27,7 @@ main() {
 	$wget $mirror/$version -O /tmp/gentoo-snapshot.tar.xz || echo "Snapshot exists, continuing"
 	tar -xpvf /tmp/gentoo-snapshot.tar.xz -C $bdir || true
 	cp /etc/resolv.conf $bdir/etc
+	cp -r $proj_dir/patches $bdir/etc/portage/patches
 	for cmd in "${gentoo_cmds[@]}"; do
 		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" arch-chroot $bdir $cmd
 	done
@@ -54,7 +55,7 @@ main() {
 		USE=$USE ACCEPT_KEYWORDS="~*" arch-chroot $bdir emerge -v $pkg || continue
 	done
 	for svc in "${svcs[@]}"; do
-		arch-chroot $bdir rc-update add $svc
+		arch-chroot $bdir rc-update add $svc $name
 	done
 	$proj_dir/recenv/tarball2img.sh $bdir $name
 }
