@@ -6,7 +6,7 @@ source settings
 proj_dir=$(pwd)
 wget=$(command -v wget || command -v wget2)
 USE="-X -previewer -webengine"
-cp_dirs=(package.use patches)
+cp_dirs=(package.use)
 gentoo_cmds=("emerge-webrsync"
 			 "emerge --oneshot sys-apps/portage"
 			 "emerge -v dev-lang/rust"
@@ -32,6 +32,7 @@ main() {
 	for dir in "${cp_dirs[@]}"; do
 		cp -r $proj_dir/$dir $bdir/etc/portage/$dir
 	done
+	cp -r $proj_dir/etc/* $bdir/etc
 	for f in $(arch-chroot $bdir find /etc/portage/package.use); do
 		echo u | arch-chroot $bdir dispatch-conf $f
 	done
