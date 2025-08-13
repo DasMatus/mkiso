@@ -3,7 +3,7 @@
 # Name
 name=MatuushOS
 # Variant of the Gentoo base
-variant=amd64-musl-llvm
+variant=amd64-desktop-openrc
 # Which desktop we want?
 # Options:
 # - gnome
@@ -16,7 +16,7 @@ awk '{print $1}' | head -n 6 | tail --lines 1)
 # Build directory
 bdir=~/.mtos/build
 # Packages we want to include in our version of MatuushOS (please don't include packges for desktop environments)
-pkgs=(dbus sys-apps/elogind librewolf papirus-icon-theme flatpak podman fwupd bat cat fastfetch)
+pkgs=(dbus sys-apps/elogind librewolf papirus-icon-theme flatpak podman fwupd bat cat fastfetch fonts-meta corefonts)
 # Additional overlays to enable. Git overlays are not yet supported.
 overlays=(librewolf)
 # What use flags you want to enable. Keep in mind that if you pass in an invalid USE flag, the script will fail

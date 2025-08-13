@@ -1,1 +1,1 @@
-dev-lang/rust llvm-libunwind lto mrustc-bootstrap parallel-compiler rustfmt system-llvm clippy rust-analyzer rust-src
+dev-lang/rust-bin dev-lang/rust lto parallel-compiler wasm rustfmt clippy rust-analyzer rust-src system-llvm

@@ -6,11 +6,12 @@ source settings
 proj_dir=$(pwd)
 wget=$(command -v wget || command -v wget2)
 USE="-X -previewer -webengine"
-cp_dirs=(package.use package.env)
+cp_dirs=(package.use)
 gentoo_cmds=("emerge-webrsync"
+			 "getuto"
 			 "emerge --oneshot sys-apps/portage"
-			 "emerge -v dev-lang/rust"
-			 "emerge -vuDN --with-bdeps=y @world"
+			 "emerge -vuDN --with-bdeps=y --changed-use @world"
+			 "emerge --depclean"
 	         "emerge -v eselect-repository linux-firmware display-manager-init sys-kernel/vanilla-sources"
 			 "eselect kernel set 1"
 )
@@ -36,8 +37,9 @@ main() {
 		echo u | arch-chroot $bdir dispatch-conf $f
 	done
 	for cmd in "${gentoo_cmds[@]}"; do
-		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" CC="clang" CPP="clang-cpp" CXX="clang++" AR="llvm-ar" NM="llvm-nm" RANLIB="llvm-ranlib" arch-chroot $bdir $cmd || exit 1
+		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir $cmd || exit 1
 	done
+	echo -n "FEATURES=\\\"\${FEATURES} getbinpkg binpkg-request-signature\\\"" >> $bdir/etc/portage/make.conf
 	cp -r $proj_dir/etc/* $bdir/etc
 	install -d $bdir/etc/runlevels/$name
 	# Fix some issues with the desktop
@@ -46,11 +48,11 @@ main() {
 	case "$desktop" in
 		gnome)
 			echo "DISPLAYMANAGER=gdm" | tee $bdir/etc/conf.d/display-manager
-			USE="$USE" ACCEPT_KEYWORDS="~*" arch-chroot $bdir emerge -v gnome-light
+			USE="$USE" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir emerge -v gnome-light
 			;;
 		kde)
 			echo "DISPLAYMANAGER=sddm" | tee $bdir/etc/conf.d/display-manager
-			USE="$USE sddm display-manager" ACCEPT_KEYWORDS="~*" arch-chroot $bdir emerge -v kde-plasma/plasma-desktop kde-plasma/powerdevil kde-plasma/systemsettings
+			USE="$USE sddm display-manager" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir emerge -v kde-plasma/plasma-desktop kde-plasma/powerdevil kde-plasma/systemsettings
 			;;
 		*)
 			;;

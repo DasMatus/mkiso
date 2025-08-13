@@ -17,7 +17,7 @@ Run `bash mtos-builder.sh`.
 # What we need to do now?
 - [] Make it build
 
-# What needs to be done in the future?
+# What should we do in the future?
 - [] Make more image versions
   - [] Gaming edition (will be *only* in the daily and weekly images, because we need up-to-date drivers)
   - [] Paranoia edition (Every channel)
@@ -25,3 +25,4 @@ Run `bash mtos-builder.sh`.
     - Secure Boot will be mandated 
   - [-] Developer edition (default as of the time of writing this) (every channel)
     - Full Rust suite, including Clippy, Cargo and much much more
+- [] Make MUSL and LLVM images the default
