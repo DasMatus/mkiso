@@ -5,10 +5,12 @@ set -eux -o pipefail
 source settings
 proj_dir=$(pwd)
 wget=$(command -v wget || command -v wget2)
-USE="-X "
+USE="-X -previewer -webengine"
 gentoo_cmds=("emerge-webrsync"
 			 "emerge --oneshot sys-apps/portage"
+			 "emerge -uDN @world"
 	         "emerge -v eselect-repository linux-firmware display-manager-init sys-kernel/vanilla-sources"
+			 "eselect kernel set 1"
 )
 main() {
 	rm -rf /tmp/tmp.* /tmp/gentoo-snapshot.tar.xz
