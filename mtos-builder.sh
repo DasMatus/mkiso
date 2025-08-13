@@ -37,7 +37,7 @@ main() {
 		echo u | arch-chroot $bdir dispatch-conf $f
 	done
 	for cmd in "${gentoo_cmds[@]}"; do
-		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" arch-chroot $bdir $cmd || exit 1
+		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" CC="clang" CPP="clang-cpp" CXX="clang++" AR="llvm-ar" NM="llvm-nm" RANLIB="llvm-ranlib" arch-chroot $bdir $cmd || exit 1
 	done
 	install -d $bdir/etc/runlevels/$name
 	# Fix some issues with the desktop
