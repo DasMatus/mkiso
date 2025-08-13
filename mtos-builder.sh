@@ -9,12 +9,13 @@ USE="-X -previewer -webengine"
 cp_dirs=(package.use patches)
 gentoo_cmds=("emerge-webrsync"
 			 "emerge --oneshot sys-apps/portage"
-			 "emerge -uDN @world"
+			 "emerge -v dev-lang/rust"
+			 "emerge -vuDN --with-bdeps=y @world"
 	         "emerge -v eselect-repository linux-firmware display-manager-init sys-kernel/vanilla-sources"
 			 "eselect kernel set 1"
 )
 main() {
-	rm -rf /tmp/tmp.* /tmp/gentoo-snapshot.tar.xz
+	rm -rf /tmp/tmp.* $bdir /tmp/gentoo-snapshot.tar.xz
 	mkdir -p $bdir
 	for flag in "${flags[@]}"; do
 		if [[ -n "$(curl https://www.gentoo.org/support/use-flags/ | grep -i "use-flag" | grep $flag | sort | uniq)" ]]; then
@@ -35,7 +36,7 @@ main() {
 		echo u | arch-chroot $bdir dispatch-conf $f
 	done
 	for cmd in "${gentoo_cmds[@]}"; do
-		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" arch-chroot $bdir $cmd
+		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" arch-chroot $bdir $cmd || exit 1
 	done
 	install -d $bdir/etc/runlevels/$name
 	# Fix some issues with the desktop

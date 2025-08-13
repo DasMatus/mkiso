@@ -9,7 +9,13 @@ And more coming down the road.
 The OS updates itself while you're doing something more interesting.
 
 # Installation
-TBD (the [MatuushOS initial installer](https://gitlab.com/MatuushOS/))
+TBD (the [MatuushOS initial installer](https://gitlab.com/MatuushOS/) is not finished yet)
+
+# Building
+Run `bash mtos-builder.sh`.
+
+# What we need to do now?
+- [] Make it build
 
 # What needs to be done in the future?
 - [] Make more image versions
@@ -17,3 +23,5 @@ TBD (the [MatuushOS initial installer](https://gitlab.com/MatuushOS/))
   - [] Paranoia edition (Every channel)
     - SELinux enabled out-of-the-box
     - Secure Boot will be mandated 
+  - [-] Developer edition (default as of the time of writing this) (every channel)
+    - Full Rust suite, including Clippy, Cargo and much much more
