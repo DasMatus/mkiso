@@ -5,10 +5,10 @@ set -eux -o pipefail
 source settings
 proj_dir=$(pwd)
 wget=$(command -v wget || command -v wget2)
-USE=""
+USE="-X "
 gentoo_cmds=("emerge-webrsync"
-	"emerge --oneshot sys-apps/portage"
-	"emerge -u eselect linux-firmware grub display-manager-init"
+			 "emerge --oneshot sys-apps/portage"
+	         "emerge -v eselect-repository linux-firmware display-manager-init sys-kernel/vanilla-sources"
 )
 main() {
 	rm -rf /tmp/tmp.* /tmp/gentoo-snapshot.tar.xz
@@ -26,7 +26,7 @@ main() {
 	tar -xpvf /tmp/gentoo-snapshot.tar.xz -C $bdir || true
 	cp /etc/resolv.conf $bdir/etc
 	for cmd in "${gentoo_cmds[@]}"; do
-		USE=$USE arch-chroot $bdir $cmd
+		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" arch-chroot $bdir $cmd
 	done
 	install -d $bdir/etc/runlevels/$name
 	# Fix some issues with the desktop
@@ -35,11 +35,13 @@ main() {
 	case "$desktop" in
 		gnome)
 			echo "DISPLAYMANAGER=gdm" | tee $bdir/etc/conf.d/display-manager
-			USE="$USE -X" arch-chroot $bdir emerge -v gnome-light gnome-software
+			USE="$USE" ACCEPT_KEYWORDS="~*" arch-chroot $bdir emerge -v gnome-light
 			;;
 		kde)
 			echo "DISPLAYMANAGER=sddm" | tee $bdir/etc/conf.d/display-manager
-			USE="$USE -X sddm display-manager " arch-chroot $bdir emerge -v
+			USE="$USE sddm display-manager" ACCEPT_KEYWORDS="~*" arch-chroot $bdir emerge -v kde-plasma/plasma-desktop kde-plasma/powerdevil kde-plasma/systemsettings
+			;;
+		*)
 			;;
 	esac
 	for overlay in "${overlays[@]}"; do
@@ -47,7 +49,7 @@ main() {
 		arch-chroot $bdir emaint -r $overlay sync || continue
 	done
 	for pkg in "${pkgs[@]}"; do
-		USE=$USE arch-chroot $bdir emerge -v $pkg || continue
+		USE=$USE ACCEPT_KEYWORDS="~*" arch-chroot $bdir emerge -v $pkg || continue
 	done
 	for svc in "${svcs[@]}"; do
 		arch-chroot $bdir rc-update add $svc
