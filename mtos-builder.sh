@@ -6,6 +6,7 @@ source settings
 proj_dir=$(pwd)
 wget=$(command -v wget || command -v wget2)
 USE="-X -previewer -webengine"
+cp_dirs=(package.use patches)
 gentoo_cmds=("emerge-webrsync"
 			 "emerge --oneshot sys-apps/portage"
 			 "emerge -uDN @world"
@@ -27,7 +28,12 @@ main() {
 	$wget $mirror/$version -O /tmp/gentoo-snapshot.tar.xz || echo "Snapshot exists, continuing"
 	tar -xpvf /tmp/gentoo-snapshot.tar.xz -C $bdir || true
 	cp /etc/resolv.conf $bdir/etc
-	cp -r $proj_dir/patches $bdir/etc/portage/patches
+	for dir in "${cp_dirs[@]}"; do
+		cp -r $proj_dir/$dir $bdir/etc/portage/$dir
+	done
+	for f in $(arch-chroot $bdir find /etc/portage/package.use); do
+		echo u | arch-chroot $bdir dispatch-conf $f
+	done
 	for cmd in "${gentoo_cmds[@]}"; do
 		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" arch-chroot $bdir $cmd
 	done
