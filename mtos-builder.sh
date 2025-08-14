@@ -47,11 +47,11 @@ main() {
 	for cmd in "${gentoo_cmds[@]}"; do
 		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir $cmd || exit 1
 	done
-	echo -n "FEATURES=\\\"\${FEATURES} getbinpkg binpkg-request-signature\\\"" >> $bdir/etc/portage/make.conf
+	echo "FEATURES='\${FEATURES} getbinpkg binpkg-request-signature'" >> $bdir/etc/portage/make.conf
 	cp -r $proj_dir/etc/* $bdir/etc
 	install -d $bdir/etc/runlevels/$name
 	# Fix some issues with the desktop
-	USE="minimal" arch-chroot $bdir emerge --oneshot libsndfile
+	USE="minimal" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir emerge --oneshot libsndfile
 	# Merge the desktop
 	case "$desktop" in
 		gnome)
