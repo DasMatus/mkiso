@@ -7,7 +7,7 @@ proj_dir=$(pwd)
 wget=$(command -v wget || command -v wget2)
 USE="-X -previewer -webengine"
 cp_dirs=(package.use)
-gentoo_cmds=("emerge-webrsync"
+gentoo_cmds=(
 			 "getuto"
 			 "emerge --oneshot sys-apps/portage"
 			 "emerge -vuDN --with-bdeps=y --changed-use @world"
@@ -26,7 +26,6 @@ main() {
 			exit 1
 		fi
 	done
-	USE+="$desktop "
 	$wget $mirror/$version -O /tmp/gentoo-snapshot.tar.xz || echo "Snapshot exists, continuing"
 	tar -xpvf /tmp/gentoo-snapshot.tar.xz -C $bdir || true
 	cp /etc/resolv.conf $bdir/etc
@@ -36,6 +35,15 @@ main() {
 	for f in $(arch-chroot $bdir find /etc/portage/package.use); do
 		echo u | arch-chroot $bdir dispatch-conf $f
 	done
+	arch-chroot $bdir emerge-webrsync
+	case "$desktop" in
+		gnome | kde)
+			arch-chroot "$bdir" eselect profile set "$(arch-chroot "$bdir" eselect profile list | grep "$desktop" | awk -F'[][]' 'NR==1 {print $2}')"
+			USE+="$desktop "
+			;;
+		*)
+			;;
+	esac
 	for cmd in "${gentoo_cmds[@]}"; do
 		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir $cmd || exit 1
 	done
