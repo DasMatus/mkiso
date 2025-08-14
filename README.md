@@ -1,4 +1,6 @@
 # An operating system that doesn't sacrifice on anything.
+[![pipeline status](https://gitlab.com/matuushos/mkiso/badges/v2a/pipeline.svg)](https://gitlab.com/matuushos/mkiso/-/commits/v2a) [![Latest Release](https://gitlab.com/matuushos/mkiso/-/badges/release.svg)](https://gitlab.com/matuushos/mkiso/-/releases)
+
 It aims to have as little of C/C++ code as it's physically possible while using the power of Rust to write new and innovative tools for the Linux desktop. Its main features include: 
 - Automatic updates using [`recenv`](https://gitlab.com/MatuushOS/recenv), whose frequency you can control
 - Rust-based user interface
