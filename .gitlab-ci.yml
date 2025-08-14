@@ -3,6 +3,7 @@ before_script:
   - dnf in -y @development-tools arch-install-scripts
   - dnf in -y @development-tools wget curl arch-install-scripts bash cpio musl-gcc
 Build it:
+  timeout: 12h 20m
   script: bash mtos-builder.sh
   artifacts:
     paths:
