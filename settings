@@ -24,4 +24,4 @@ flags=(dbus elogind wayland pipewire gtk thunderbolt udev alsa firmware)
 # Additional commands to run inside the chroot
 additional_cmds=("flatpak remote-add flathub https://dl.flathub.org/repo/flathub.flatpakrepo")
 # Which services to enable
-svcs=(dbus elogind display-manager-init udev udev-trigger udev-settle)
+svcs=(dbus elogind display-manager udev udev-trigger udev-settle)
