@@ -5,11 +5,10 @@ set -eux -o pipefail
 source settings
 proj_dir=$(pwd)
 wget=$(command -v wget || command -v wget2)
-USE="-X -previewer -webengine"
+USE="X -previewer -webengine "
 cp_dirs=(package.use)
 gentoo_cmds=(
 			 "getuto"
-			 "emerge --oneshot sys-apps/portage"
 			 "emerge -vuDN --with-bdeps=y --changed-use @world"
 			 "emerge --depclean"
 	         "emerge -v eselect-repository linux-firmware display-manager-init sys-kernel/vanilla-sources"
@@ -56,11 +55,11 @@ main() {
 	case "$desktop" in
 		gnome)
 			echo "DISPLAYMANAGER=gdm" | tee $bdir/etc/conf.d/display-manager
-			USE="$USE" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir emerge -v gnome-light
+			USE="$USE -qt" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir emerge -v gnome-light
 			;;
 		kde)
 			echo "DISPLAYMANAGER=sddm" | tee $bdir/etc/conf.d/display-manager
-			USE="$USE sddm display-manager" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir emerge -v kde-plasma/plasma-desktop kde-plasma/powerdevil kde-plasma/systemsettings
+			USE="$USE sddm display-manager -gtk" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir emerge -v kde-plasma/plasma-desktop kde-plasma/powerdevil kde-plasma/systemsettings
 			;;
 		*)
 			;;
