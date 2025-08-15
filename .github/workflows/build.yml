@@ -1,13 +1,10 @@
 name: Build MTOS
 
 on:
-  push:
-    tags:
-      - 'v*'     # Trigger only on version tags like v1.0, v2.3.1
-    schedule:
-      - @weekly
-      - @monthly
-      - @yearly
+  schedule:
+    - cron: weekly
+    - cron: monthly
+    - cron: yearly
 jobs:
   build:
     runs-on: ubuntu-latest
