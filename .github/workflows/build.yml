@@ -2,9 +2,7 @@ name: Build MTOS
 
 on:
   schedule:
-    - cron: weekly
-    - cron: monthly
-    - cron: yearly
+    - cron: "* * 2/15 * *"
 jobs:
   build:
     runs-on: ubuntu-latest
