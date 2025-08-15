@@ -43,9 +43,6 @@ main() {
 		*)
 			;;
 	esac
-	for var in "${makeconf_vars[@]}"; do
-		echo "$var" >> $bdir/etc/portage/make.conf
-	done
 	for cmd in "${gentoo_cmds[@]}"; do
 		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir $cmd || exit 1
 	done
