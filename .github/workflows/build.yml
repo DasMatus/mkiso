@@ -1,0 +1,55 @@
+name: Build MTOS
+
+on:
+  push:
+    tags:
+      - 'v*'     # Trigger only on version tags like v1.0, v2.3.1
+    schedule:
+      - @weekly
+      - @monthly
+      - @yearly
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          dnf install -y @development-tools wget curl arch-install-scripts bash cpio musl-gcc
+          dnf clean all
+
+      - name: Run build script
+        run: |
+          bash mtos-builder.sh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: system-image
+          path: target/system.img
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: system-image
+          path: .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: system.img
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
