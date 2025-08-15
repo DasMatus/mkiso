@@ -1,0 +1,9 @@
+NAME=MatuushOS
+ID=mtos
+ID_LIKE=gentoo
+PRETTY_NAME="MatuushOS Linux"
+ANSI_COLOR="0;97"
+HOME_URL="https://www.gentoo.org/"
+SUPPORT_URL="https://matuushos.gitlab.io"
+BUG_REPORT_URL="https://gitlab.com/MatuushOS/mkiso/-/issues"
+VERSION_ID="2.17"

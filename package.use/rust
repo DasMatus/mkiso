@@ -1,0 +1,1 @@
+dev-lang/rust lto parallel-compiler wasm rustfmt clippy rust-analyzer rust-src system-llvm wasm
