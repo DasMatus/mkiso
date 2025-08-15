@@ -6,6 +6,7 @@ It aims to have as little of C/C++ code as it's physically possible while using 
 - Rust-based user interface
 - Animated bootup logo
 - Declarative build configuration
+
 And more coming down the road. 
 
 The OS updates itself while you're doing something more interesting.
