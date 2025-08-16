@@ -69,8 +69,9 @@ main() {
 		arch-chroot $bdir emaint -r $overlay sync || continue
 	done
 	for pkg in "${pkgs[@]}"; do
-		USE=$USE ACCEPT_KEYWORDS="~*" arch-chroot $bdir emerge -v $pkg || continue
+		(USE=$USE ACCEPT_KEYWORDS="~*" arch-chroot $bdir emerge -v $pkg &) || continue 
 	done
+	wait
 	for svc in "${svcs[@]}"; do
 		arch-chroot $bdir rc-update add $svc $name
 	done
