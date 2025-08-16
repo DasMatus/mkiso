@@ -3,6 +3,8 @@ name: Build MTOS
 on:
   schedule:
     - cron: "* * 2/15 * *"
+  workflow_dispatch:
+    
 jobs:
   build:
     runs-on: ubuntu-latest
