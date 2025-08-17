@@ -1,4 +1,4 @@
-name: Build MTOS
+name: Build and release MatuushOS system.img
 
 on:
   schedule:
