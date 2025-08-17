@@ -8,20 +8,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: fedora:latest
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
-          dnf install -y @development-tools wget curl arch-install-scripts bash cpio musl-gcc
-          dnf clean all
+          apt update
+          apt install -y arch-install-scripts cpio tar bsdtar bash
 
       - name: Run build script
         run: |
-          bash mtos-builder.sh
+          sudo bash mtos-builder.sh
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

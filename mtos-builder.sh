@@ -18,7 +18,7 @@ main() {
 	rm -rf /tmp/tmp.* $bdir /tmp/gentoo-snapshot.tar.xz
 	mkdir -p $bdir
 	for flag in "${flags[@]}"; do
-		if [[ -n "$(curl https://www.gentoo.org/support/use-flags/ | grep -i "use-flag" | grep $flag | sort | uniq)" ]]; then
+		if [[ -n "$(curl https://www.gentoo.org/support/use-flags/ | grep "use-flag" | grep $flag | sort | uniq)" ]]; then
 			USE+="$flag "
 			continue
 		else
