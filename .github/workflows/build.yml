@@ -14,8 +14,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt update
-          apt install -y arch-install-scripts cpio tar bsdtar bash
+          sudo apt update
+          sudo apt install -y arch-install-scripts cpio tar bsdtar bash
 
       - name: Run build script
         run: |
