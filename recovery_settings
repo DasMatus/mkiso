@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Name of resulting initramfs. Used by mkrecovery.sh
+name=recovery
+# Used for setting up the image name to flash in recenv and for resulting image name in tarball2img.sh 
+imgname=system.img
+# Recenv only: Used to download the the image
+server=
+# Recenv only: Used to check against checksum that was downloaded by the `hash_download()` function in it
+sha256=
+# Recenv only: Sets the target drive
+tgt=/dev/sda
+# Recenv only: Whether to reformat. If set to `on`, then it'll also reformat the home partition
+reformat=off
