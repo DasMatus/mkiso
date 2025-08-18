@@ -7,10 +7,11 @@ proj_dir=$(pwd)
 wget=$(command -v wget || command -v wget2)
 USE="X -previewer -webengine "
 cp_dirs=(package.use)
+cp_to_etc=(skel os-release)
 gentoo_cmds=(
 			 "getuto"
-			 "emerge -vuDN --with-bdeps=y --changed-use @world"
-			 "emerge --depclean"
+			#  "emerge -vuDN --with-bdeps=y --changed-use @world"
+			#  "emerge --depclean"
 	         "emerge -v eselect-repository linux-firmware display-manager-init sys-kernel/vanilla-sources"
 			 "eselect kernel set 1"
 )
@@ -30,6 +31,9 @@ main() {
 	cp /etc/resolv.conf $bdir/etc
 	for dir in "${cp_dirs[@]}"; do
 		cp -r $proj_dir/$dir $bdir/etc/portage/$dir
+	done
+	for dir in "${cp_to_etc[@]}"; do
+		cp -r $proj_dir/etc $bdir/etc
 	done
 	for f in $(arch-chroot $bdir find /etc/portage/package.use); do
 		echo u | arch-chroot $bdir dispatch-conf $f
