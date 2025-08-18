@@ -2,7 +2,7 @@ name: Build and release MatuushOS system.img
 
 on:
   schedule:
-    - cron: "* * 2/15 * *"
+    - cron: "0 0 * * 2"
   workflow_dispatch:
     
 jobs:
