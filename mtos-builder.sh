@@ -10,8 +10,8 @@ cp_dirs=(package.use)
 cp_to_etc=(skel os-release)
 gentoo_cmds=(
 			 "getuto"
-			#  "emerge -vuDN --with-bdeps=y --changed-use @world"
-			#  "emerge --depclean"
+			 "emerge -vuDN --with-bdeps=y --changed-use @world"
+			 "emerge --depclean"
 	         "emerge -v eselect-repository linux-firmware display-manager-init sys-kernel/vanilla-sources"
 			 "eselect kernel set 1"
 )
@@ -26,6 +26,7 @@ main() {
 			exit 1
 		fi
 	done
+	echo "LLVM_TARGETS=\"-* X86\"" >> $bdir/etc/portage/make.conf
 	$wget $mirror/$version -O /tmp/gentoo-snapshot.tar.xz || echo "Snapshot exists, continuing"
 	tar -xpvf /tmp/gentoo-snapshot.tar.xz -C $bdir || true
 	cp /etc/resolv.conf $bdir/etc
