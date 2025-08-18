@@ -12,7 +12,7 @@ gentoo_cmds=(
 			 "getuto"
 			 "emerge -vuDN --with-bdeps=y --changed-use @world"
 			 "emerge --depclean"
-	         "emerge -v eselect-repository linux-firmware display-manager-init sys-kernel/vanilla-sources"
+			 "emerge -v eselect-repository linux-firmware display-manager-init sys-kernel/vanilla-sources"
 			 "eselect kernel set 1"
 )
 main() {
