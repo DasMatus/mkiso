@@ -18,6 +18,8 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y arch-install-scripts cpio tar bash util-linux e2fsprogs
+      - name: Run it
+        run: sudo bash mtos-builder.sh
   release:
     needs: build
     runs-on: ubuntu-latest
