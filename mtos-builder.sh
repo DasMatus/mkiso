@@ -29,7 +29,7 @@ main() {
 	$wget $mirror/$version -O /tmp/gentoo-snapshot.tar.xz || echo "Snapshot exists, continuing"
 	tar -xpvf /tmp/gentoo-snapshot.tar.xz -C $bdir || true
 	cp /etc/resolv.conf $bdir/etc
-	echo "LLVM_TARGETS=\"-* X86\"" >> $bdir/etc/portage/make.conf
+	echo "LLVM_TARGETS=\"X86\"" >> $bdir/etc/portage/make.conf
 	for dir in "${cp_dirs[@]}"; do
 		cp -r $proj_dir/$dir $bdir/etc/portage/$dir
 	done
