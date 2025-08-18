@@ -11,11 +11,13 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+        with:
+          submodules: 'true'  
 
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y arch-install-scripts cpio tar bash
+          sudo apt install -y arch-install-scripts cpio tar bash fallocate e2fsprogs
 
       - name: Run build script
         run: |
