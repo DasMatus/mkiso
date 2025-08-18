@@ -59,7 +59,7 @@ main() {
 	case "$desktop" in
 		gnome)
 			echo "DISPLAYMANAGER=gdm" | tee $bdir/etc/conf.d/display-manager
-			USE="$USE -qt" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir emerge -v gnome-light
+			USE="$USE -qt" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir emerge -v gnome-light gnome-software 
 			;;
 		kde)
 			echo "DISPLAYMANAGER=sddm" | tee $bdir/etc/conf.d/display-manager

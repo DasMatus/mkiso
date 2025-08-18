@@ -9,7 +9,7 @@ variant=amd64-desktop-openrc
 # - gnome
 # - kde
 desktop=gnome
-# Mirror we want to use for downloading the base tarball
+# Mirror you want to use for downloading the base tarball
 mirror=https://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-$variant/
 # Snapshot of Gentoo we want to use
 version=$(curl $mirror/latest-stage3-$variant.txt | 
