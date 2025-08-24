@@ -1,15 +1,14 @@
 #!/bin/bash
 # shellcheck disable=SC2086,SC2046
-set -eux -o pipefail
+set -Eeux -o pipefail
 # shellcheck source=settings
 source settings
 proj_dir=$(pwd)
 wget=$(command -v wget || command -v wget2)
-USE="X -previewer -webengine "
 cp_to_etc=(skel os-release)
 alpine_cmds=(
 	"apk update"
-	"apk add linux-firmware"	
+	"apk add linux-firmware alpine-conf grub"	
 )
 main() {
 	rm -rf /tmp/tmp.* $bdir /tmp/alpine-snapshot.tar.xz
@@ -20,21 +19,28 @@ main() {
 	for dir in "${cp_to_etc[@]}"; do
 		cp -r $proj_dir/etc $bdir/etc
 	done
+	echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> $bdir/etc/apk/repositories
+	for cmd in "${alpine_cmds[@]}"; do
+		arch-chroot $bdir $cmd
+	done
 	case "$desktop" in
 		kde)
-			echo plasma | arch-chroot $bdir setup-desktop
+			arch-chroot $bdir setup-desktop plasma
 			;;
-		gnome | *)
-			echo $desktop | arch-chroot $bdir setup-desktop
+		*)
+			arch-chroot $bdir setup-desktop $desktop
 			;;
 	esac
 	cp -r $proj_dir/etc/* $bdir/etc
 	install -d $bdir/etc/runlevels/$name
 	for pkg in "${pkgs[@]}"; do
-		USE=$USE ACCEPT_LICENSE="*" ACCEPT_KEYWORDS="~*" FEATURES="getbinpkg binpkg-request-signature" arch-chroot $bdir emerge -v $pkg 
+		arch-chroot $bdir apk add $pkg || true
 	done
 	for svc in "${svcs[@]}"; do
 		arch-chroot $bdir rc-update add $svc $name
+	done
+	for pkg in "${rm_pkg[@]}"; do
+		arch-chroot $bdir apk del $pkg
 	done
 	$proj_dir/recenv/tarball2img.sh $bdir $name
 }

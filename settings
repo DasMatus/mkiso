@@ -25,15 +25,14 @@ variant=v3.22
 # Snapshot of Alpine we want to use
 version=$(arch)
 # Mirror you want to use for downloading the base tarball
-mirror=https://dl-cdn.alpinelinux.org/alpine/$variant/releases/$version/alpine-minirootfs-$variant-x86_64.tar.gz
+mirror=https://dl-cdn.alpinelinux.org/alpine/$variant/releases/$version/alpine-minirootfs-3.22.1-$version.tar.gz
 # Build directory
 bdir=~/.mtos/build
-# Packages we want to include in our version of MatuushOS (please don't include packges for desktop environments)
-pkgs=(dbus elogind librewolf papirus-icon-theme $dm flatpak podman fwupd bat cat fastfetch)
-# Additional overlays to enable. Git overlays are not yet supported.
-extra_repos=(testing)
+# Packages we want to include in our version of MatuushOS 
+# Please don't include packges for desktop environments, these are installed automatically via the $desktop variable
+pkgs=(dbus elogind librewolf $dm flatpak gcompat podman fwupd bat fastfetch networkmanager-wifi networkmanager-bluetooth)
+rm_pkgs=(firefox gnome-tour)
 # Additional commands to run inside the chroot
 additional_cmds=("flatpak remote-add flathub https://dl.flathub.org/repo/flathub.flatpakrepo")
 # Which services to enable
-
-svcs=(dbus elogind display-manager udev udev-trigger udev-settle)
+svcs=(dbus elogind $dm udev networkmanager)

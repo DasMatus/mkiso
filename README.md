@@ -10,7 +10,7 @@ It aims to have as little of C/C++ code as it's physically possible while using 
 - Rust-based user interface
 And more coming down the road. 
 
-The OS updates itself while you're doing something more interesting.
+The OS updates itself in the background while you're doing something more interesting.
 
 # Installation
 TBD (the [MatuushOS initial installer](https://gitlab.com/MatuushOS/mii) is not finished yet)
@@ -29,4 +29,4 @@ Run `bash mtos-builder.sh`.
     - Secure Boot will be mandated 
   - [-] Developer edition (default as of the time of writing this) (every channel)
     - Full Rust suite, including Clippy, Cargo and much much more
-- [] Make MUSL and LLVM images the default
+- [x] Make MUSL and LLVM images the default
