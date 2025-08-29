@@ -6,9 +6,10 @@ source settings
 proj_dir=$(pwd)
 wget=$(command -v wget || command -v wget2)
 cp_to_etc=(skel os-release)
+apk="/sbin/apk"
 alpine_cmds=(
-	"apk update"
-	"apk add linux-firmware alpine-conf grub"	
+	"$apk update"
+	"$apk add linux-firmware alpine-conf grub"	
 )
 main() {
 	rm -rf /tmp/tmp.* $bdir /tmp/alpine-snapshot.tar.xz
@@ -40,7 +41,7 @@ main() {
 		arch-chroot $bdir rc-update add $svc $name
 	done
 	for pkg in "${rm_pkg[@]}"; do
-		arch-chroot $bdir apk del $pkg
+		arch-chroot $bdir $apk del $pkg
 	done
 	$proj_dir/recenv/tarball2img.sh $bdir $name
 }
