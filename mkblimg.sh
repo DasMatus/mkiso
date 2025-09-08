@@ -8,7 +8,7 @@ limine_url=https://codeberg.org/Limine/Limine
 limine_version=v9.x-binary
 install_limine() {
     [[ -d /tmp/limine ]]; rm -rf /tmp/limine 
-    $(command -v git) clone $limine_url --branch $limine_version /tmp/limine
+    $(command -v git) clone $limine_url --branch $limine_version $bdir
     cp /tmp/limine/BOOT*.efi $1
 }
 main() {
@@ -20,7 +20,7 @@ main() {
     mount /tmp/bl_stage0.img $bdir
     mkdir -p $bdir/EFI/BOOT
     install_limine $bdir/EFI/BOOT
-
+    
 }
 if [[ $(id -u) != 0 ]]; then
 	providers=(sudo doas run0)
