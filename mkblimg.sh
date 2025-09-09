@@ -26,7 +26,7 @@ main() {
     mkdir -p $bdir/EFI/BOOT
     cp /tmp/limine/BOOT*.efi /tmp/mtos/EFI/BOOT
     cp /boot/vmlinuz-$(uname -r) /tmp/mtos/kernel
-    echo "/MatuushOS\n$tabs protocol: linux\n$tabs kernel_path: boot():/kernel\n$tabs module_path: boot():/initramfs\n$tabs cmdline: quiet rhgb root=system.img ro\n$tabs comment: Boot a better operating system\n//Other operating systems\n/Windows\n$tabs protocol: efi\n$tabs path: boot():/EFI/Microsoft/bootmgfw.efi" >> /tmp/mtos/limine.conf
+    echo -e "/MatuushOS\n$tabs protocol: linux\n$tabs kernel_path: boot():/kernel\n$tabs module_path: boot():/initramfs\n$tabs cmdline: quiet rhgb root=system.img ro\n$tabs comment: Boot a better operating system\n//Other operating systems\n/Windows\n$tabs protocol: efi\n$tabs path: boot():/EFI/Microsoft/bootmgfw.efi" >> /tmp/mtos/limine.conf
     mkinitramfs /tmp/mtos
     umount -R /tmp/mtos
     cp /tmp/bl_stage0.img $(pwd)/target
