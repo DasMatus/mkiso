@@ -13,6 +13,7 @@ install_limine() {
     $(command -v git) clone $limine_url --branch $limine_version /tmp/limine
 }
 main() {
+    mkdir -p /tmp/mtos
     install_limine
     mkdir -p $bdir
     bash $(pwd)/mtos-builder.sh
@@ -21,11 +22,21 @@ main() {
     fallocate -l $img_size /tmp/bl_stage0.img
     printf "g\nn\n\n\n\nt\n1\nw\n" | fdisk /tmp/bl_stage0.img
     mkfs.fat -F32 /tmp/bl_stage0.img
-    mount /tmp/bl_stage0.img $bdir
+    mount /tmp/bl_stage0.img /tmp/mtos
     mkdir -p $bdir/EFI/BOOT
-    cp /tmp/limine/BOOT*.efi $bdir/EFI/BOOT
-    cp /boot/vmlinuz-$(uname -r) $bdir/kernel
-    echo "/MatuushOS\n$tabs protocol: linux\n$tabs kernel_path: boot():/kernel\n$tabs module_path: boot():/initramfs\n$tabs comment: Boot a better operating system\n//Other operating systems\n/Windows\n$tabs protocol: efi\n$tabs path: boot():/EFI/Microsoft/bootmgfw.efi" >> $bdir/limine.conf 
+    cp /tmp/limine/BOOT*.efi /tmp/mtos/EFI/BOOT
+    cp /boot/vmlinuz-$(uname -r) /tmp/mtos/kernel
+    echo "/MatuushOS\n$tabs protocol: linux\n$tabs kernel_path: boot():/kernel\n$tabs module_path: boot():/initramfs\n$tabs comment: Boot a better operating system\n//Other operating systems\n/Windows\n$tabs protocol: efi\n$tabs path: boot():/EFI/Microsoft/bootmgfw.efi" >> /tmp/mtos/limine.conf 
+}
+mkinitramfs() {
+    mkdir -p /tmp/initramfs/bin
+    arch-chroot $bdir apk add busybox-static
+    cp $(find $bdir -name busybox.static) /tmp/initramfs/bin/busybox
+    /tmp/initramfs/bin/busybox --install /tmp/initramfs/bin
+    echo -e "#!/bin/busybox sh\nset -Eeux -o pipefail\nmount -t proc none /proc\nmount -t sysfs none /sys\nmount -t devtmpfs none /dev\nmount system.img /\nswitch_root / /sbin/init" >> /tmp/initramfs/init
+    chmod +x /tmp/initramfs/init
+   	find . -print0 | cpio --null --create --verbose --format=newc | gzip --best >/tmp/minitramfs
+    cp /tmp/minitramfs $bdir/kernel
 }
 if [[ $(id -u) != 0 ]]; then
 	providers=(sudo doas run0)
