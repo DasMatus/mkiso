@@ -31,6 +31,7 @@ main() {
     mkdir -p /tmp/mtos/EFI/BOOT
     cp /tmp/limine/BOOTX64.EFI /tmp/mtos/EFI/BOOT
     cp /boot/vmlinuz-$(uname -r) /tmp/mtos/kernel
+    mkinitramfs $bdir
     echo -e "/MatuushOS\n$tabs protocol: linux\n$tabs kernel_path: boot():/kernel\n$tabs module_path: boot():/initramfs\n$tabs cmdline: quiet rhgb root=mtos.img ro\n$tabs comment: Boot a better operating system\n//Other operating systems\n/Windows\n$tabs protocol: efi\n$tabs path: boot():/EFI/Microsoft/bootmgfw.efi" >> /tmp/mtos/limine.conf
     umount -R /tmp/mtos
     cp /tmp/bl_stage0.img $(pwd)/target
@@ -38,14 +39,14 @@ main() {
 mkinitramfs() {
     dir=$(mktemp --directory)
     mkdir -p $dir 
-    tar -xvf /tmp/alpine-snapshot.tar.xz -C $dir
+    wget https://tux.rainside.sk/alpine/edge/main/x86_64/busybox-static-1.37.0-r23.apk -O /tmp/bb.tar.gz
+    tar -xvf /tmp/bb.tar.gz -C $dir
     mkdir -p /tmp/initramfs/bin
-    arch-chroot $dir apk add busybox-static
-    cp $(find $dir -name busybox.static) /tmp/initramfs/bin/busybox
+    cp $dir/bin/busybox.static /tmp/initramfs/bin/busybox
     /tmp/initramfs/bin/busybox --install /tmp/initramfs/bin
     echo -e "#!/bin/busybox sh\nset -Eeux -o pipefail\nmount -t proc none /proc\nmount -t sysfs none /sys\nmount -t devtmpfs none /dev\nmount mtos.img /\nswitch_root / /sbin/init" >> /tmp/initramfs/init
     chmod +x /tmp/initramfs/init
-   	find . -print0 | cpio --null --create --verbose --format=newc | gzip --best >/tmp/minitramfs
+   	find /tmp/initramfs -print0 | cpio --null --create --verbose --format=newc | gzip --best >/tmp/minitramfs
     cp /tmp/minitramfs $1/initramfs
 }
 if [[ $(id -u) != 0 ]]; then
