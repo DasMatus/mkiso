@@ -1,0 +1,30 @@
+image: fedora:latest
+variables:
+  NAME: mtos
+Build it:
+  script:
+    - dnf in -y @development-tools wget curl arch-install-scripts bash cpio musl-gcc kernel git
+    - bash $(pwd)/mkblimg.sh
+  artifacts:
+    when: on_success
+    paths:
+      - target/mtos.img
+      - target/bl_stage0.img
+Ship it:
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  dependencies:
+    - Build it
+  script: 
+    - apk update
+    - apk add git
+  release:
+    tag_name: release/$(date +%d-%m-%Y-%H-%M-%S)
+    description: An oncommit release of MatuushOS $CI_COMMIT_SHA
+    ref: "$CI_COMMIT_SHA"
+    assets:
+      # https://gitlab.com/matuushos/recenv/-/jobs/11281320908/artifacts/file/target/recovery-wifi.cpio.gz
+      links:
+        - name: Recovery without WiFi
+          url: https://gitlab.com/MatuushOS/mkiso/-/jobs/$CI_PIPELINE_ID/artifacts/file/target/recovery.cpio.gz
+        - name: Recovery with WiFi
+          url: https://gitlab.com/MatuushOS/mkiso/-/jobs/$CI_PIPELINE_ID/artifacts/file/target/recovery-wifi.cpio.gz
