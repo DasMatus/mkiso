@@ -24,7 +24,7 @@ Ship it:
     assets:
       # https://gitlab.com/matuushos/recenv/-/jobs/11281320908/artifacts/file/target/recovery-wifi.cpio.gz
       links:
-        - name: Recovery without WiFi
+        - name: Only the RootFS
           url: https://gitlab.com/MatuushOS/mkiso/-/jobs/$CI_PIPELINE_ID/artifacts/file/target/recovery.cpio.gz
-        - name: Recovery with WiFi
+        - name: RootFS + bootloader (experimental)
           url: https://gitlab.com/MatuushOS/mkiso/-/jobs/$CI_PIPELINE_ID/artifacts/file/target/recovery-wifi.cpio.gz
