@@ -14,22 +14,23 @@ install_limine() {
 }
 main() {
     umount /tmp/bl_stage0.img || true
+    rm /tmp/bl_stage0.img || true
     mkdir -p /tmp/mtos $(pwd)/target
     install_limine
     mkdir -p $bdir
     bash $(pwd)/mtos-builder.sh
-    img_size=$(( $(du -l $(pwd)/target/mtos.img | tail --lines 1 | awk '{print $1}') \
+    img_size=$(( \
+          $(ls -l $(pwd)/target/mtos.img | awk '{print $5}') \
         + $(du -l /tmp/limine | tail --lines 1 | awk '{print $1}') \
         + $(( 1024 * 8 )) ))
     fallocate -l $img_size /tmp/bl_stage0.img
     printf "g\nn\n\n\n\nt\n1\nw\n" | fdisk /tmp/bl_stage0.img
     mkfs.fat -F32 /tmp/bl_stage0.img
     mount /tmp/bl_stage0.img /tmp/mtos
-    mkdir -p $bdir/EFI/BOOT
-    cp /tmp/limine/BOOTX64.efi /tmp/mtos/EFI/BOOT
+    mkdir -p /tmp/mtos/EFI/BOOT
+    cp /tmp/limine/BOOTX64.EFI /tmp/mtos/EFI/BOOT
     cp /boot/vmlinuz-$(uname -r) /tmp/mtos/kernel
     echo -e "/MatuushOS\n$tabs protocol: linux\n$tabs kernel_path: boot():/kernel\n$tabs module_path: boot():/initramfs\n$tabs cmdline: quiet rhgb root=mtos.img ro\n$tabs comment: Boot a better operating system\n//Other operating systems\n/Windows\n$tabs protocol: efi\n$tabs path: boot():/EFI/Microsoft/bootmgfw.efi" >> /tmp/mtos/limine.conf
-    mkinitramfs /tmp/mtos
     umount -R /tmp/mtos
     cp /tmp/bl_stage0.img $(pwd)/target
 }
