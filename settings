@@ -35,9 +35,9 @@ mirror=https://dl-cdn.alpinelinux.org/alpine/$variant/releases/$version/alpine-m
 bdir=~/.mtos/build
 # Packages we want to include in our version of MatuushOS 
 # Please don't include packges for desktop environments, these are installed automatically via the $desktop variable
-pkgs=(dbus elogind librewolf $dm flatpak rustup gcompat podman fwupd bat fastfetch networkmanager networkmanager-wifi networkmanager-bluetooth)
+pkgs=(dbus elogind librewolf $dm flatpak rustup gcompat podman fwupd bat fastfetch networkmanager networkmanager-wifi networkmanager-bluetooth wpa_supplicant)
 rm_pkgs=(firefox gnome-tour)
 # Additional commands to run inside the chroot
 additional_cmds=("flatpak remote-add flathub https://dl.flathub.org/repo/flathub.flatpakrepo")
 # Which services to enable
-svcs=(dbus elogind $dm udev networkmanager)
+svcs=(dbus elogind $dm udev networkmanager wpa_supplicant1)
