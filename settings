@@ -40,4 +40,4 @@ rm_pkgs=(firefox gnome-tour)
 # Additional commands to run inside the chroot
 additional_cmds=("flatpak remote-add flathub https://dl.flathub.org/repo/flathub.flatpakrepo")
 # Which services to enable
-svcs=(dbus elogind $dm udev networkmanager wpa_supplicant1)
+svcs=(dbus elogind $dm udev networkmanager wpa_supplicant)

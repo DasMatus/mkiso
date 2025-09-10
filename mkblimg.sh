@@ -17,7 +17,7 @@ main() {
     install_limine
     mkdir -p $bdir
     bash $(pwd)/mtos-builder.sh
-    img_size=$(( $(du -l target/system.img | tail --lines 1 | awk '{print $1}') \
+    img_size=$(( $(du -l target/mtos.img | tail --lines 1 | awk '{print $1}') \
         + $(du -l /tmp/limine | tail --lines 1 | awk '{print $1}') \
         + $(( 1024 * 8 )) ))
     fallocate -l $img_size /tmp/bl_stage0.img
@@ -27,7 +27,7 @@ main() {
     mkdir -p $bdir/EFI/BOOT
     cp /tmp/limine/BOOTX64.efi /tmp/mtos/EFI/BOOT
     cp /boot/vmlinuz-$(uname -r) /tmp/mtos/kernel
-    echo -e "/MatuushOS\n$tabs protocol: linux\n$tabs kernel_path: boot():/kernel\n$tabs module_path: boot():/initramfs\n$tabs cmdline: quiet rhgb root=system.img ro\n$tabs comment: Boot a better operating system\n//Other operating systems\n/Windows\n$tabs protocol: efi\n$tabs path: boot():/EFI/Microsoft/bootmgfw.efi" >> /tmp/mtos/limine.conf
+    echo -e "/MatuushOS\n$tabs protocol: linux\n$tabs kernel_path: boot():/kernel\n$tabs module_path: boot():/initramfs\n$tabs cmdline: quiet rhgb root=mtos.img ro\n$tabs comment: Boot a better operating system\n//Other operating systems\n/Windows\n$tabs protocol: efi\n$tabs path: boot():/EFI/Microsoft/bootmgfw.efi" >> /tmp/mtos/limine.conf
     mkinitramfs /tmp/mtos
     umount -R /tmp/mtos
     cp /tmp/bl_stage0.img $(pwd)/target
@@ -37,7 +37,7 @@ mkinitramfs() {
     arch-chroot $bdir apk add busybox-static
     cp $(find $bdir -name busybox.static) /tmp/initramfs/bin/busybox
     /tmp/initramfs/bin/busybox --install /tmp/initramfs/bin
-    echo -e "#!/bin/busybox sh\nset -Eeux -o pipefail\nmount -t proc none /proc\nmount -t sysfs none /sys\nmount -t devtmpfs none /dev\nmount system.img /\nswitch_root / /sbin/init" >> /tmp/initramfs/init
+    echo -e "#!/bin/busybox sh\nset -Eeux -o pipefail\nmount -t proc none /proc\nmount -t sysfs none /sys\nmount -t devtmpfs none /dev\nmount mtos.img /\nswitch_root / /sbin/init" >> /tmp/initramfs/init
     chmod +x /tmp/initramfs/init
    	find . -print0 | cpio --null --create --verbose --format=newc | gzip --best >/tmp/minitramfs
     cp /tmp/minitramfs $1/initramfs

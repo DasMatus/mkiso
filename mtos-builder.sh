@@ -13,7 +13,7 @@ alpine_cmds=(
 )
 main() {
     umount /tmp/mtos.img || true
-    rm -rf /tmp/tmp.* $bdir /tmp/alpine-snapshot.tar.xz
+    rm -rf /tmp/tmp.* $bdir /tmp/alpine-snapshot.tar.xz /tmp/mtos.img
     mkdir -p $bdir
     fallocate -l 3G /tmp/mtos.img
     mkfs.ext4 /tmp/mtos.img
@@ -47,7 +47,7 @@ main() {
     for pkg in "${rm_pkgs[@]}"; do
         arch-chroot $bdir $apk del $pkg
     done
-    arch-chroot $bdir "setup-user -a -u -f \"MatuushOS user\" mtos"
+    arch-chroot $bdir setup-user -a -u -f "MatuushOS user" mtos
 }
 if [[ $(id -u) != 0 ]]; then
     providers=(sudo doas run0)
