@@ -13,11 +13,12 @@ install_limine() {
     $(command -v git) clone $limine_url --branch $limine_version /tmp/limine
 }
 main() {
+    umount /tmp/bl_stage0.img || true
     mkdir -p /tmp/mtos $(pwd)/target
     install_limine
     mkdir -p $bdir
     bash $(pwd)/mtos-builder.sh
-    img_size=$(( $(du -l target/mtos.img | tail --lines 1 | awk '{print $1}') \
+    img_size=$(( $(du -l $(pwd)/target/mtos.img | tail --lines 1 | awk '{print $1}') \
         + $(du -l /tmp/limine | tail --lines 1 | awk '{print $1}') \
         + $(( 1024 * 8 )) ))
     fallocate -l $img_size /tmp/bl_stage0.img

@@ -47,7 +47,8 @@ main() {
     for pkg in "${rm_pkgs[@]}"; do
         arch-chroot $bdir $apk del $pkg
     done
-    arch-chroot $bdir setup-user -a -u -f "MatuushOS user" mtos
+    umount /tmp/mtos.img
+    mv /tmp/mtos.img target/
 }
 if [[ $(id -u) != 0 ]]; then
     providers=(sudo doas run0)
