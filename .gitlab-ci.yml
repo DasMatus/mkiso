@@ -3,7 +3,7 @@ variables:
   NAME: mtos
 Build it:
   script:
-    - dnf in -y @development-tools wget curl arch-install-scripts bash cpio musl-gcc kernel git
+    - dnf in -y @development-tools wget curl arch-install-scripts bash cpio musl-gcc kernel git e2fsprogs util-linux
     - bash $(pwd)/mkblimg.sh
   artifacts:
     when: on_success
