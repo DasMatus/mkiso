@@ -35,9 +35,12 @@ main() {
     cp /tmp/bl_stage0.img $(pwd)/target
 }
 mkinitramfs() {
+    dir=$(mktemp --directory)
+    mkdir -p $dir 
+    tar -xvf /tmp/alpine-snapshot.tar.xz -C $dir
     mkdir -p /tmp/initramfs/bin
-    arch-chroot $bdir apk add busybox-static
-    cp $(find $bdir -name busybox.static) /tmp/initramfs/bin/busybox
+    arch-chroot $dir apk add busybox-static
+    cp $(find $dir -name busybox.static) /tmp/initramfs/bin/busybox
     /tmp/initramfs/bin/busybox --install /tmp/initramfs/bin
     echo -e "#!/bin/busybox sh\nset -Eeux -o pipefail\nmount -t proc none /proc\nmount -t sysfs none /sys\nmount -t devtmpfs none /dev\nmount mtos.img /\nswitch_root / /sbin/init" >> /tmp/initramfs/init
     chmod +x /tmp/initramfs/init
