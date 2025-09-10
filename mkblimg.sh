@@ -13,6 +13,7 @@ install_limine() {
     $(command -v git) clone $limine_url --branch $limine_version /tmp/limine
 }
 main() {
+    rm -rf /tmp/tmp.*
     umount /tmp/bl_stage0.img || true
     rm /tmp/bl_stage0.img || true
     mkdir -p /tmp/mtos $(pwd)/target
